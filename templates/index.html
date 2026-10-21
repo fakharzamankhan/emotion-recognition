@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Recognition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-K6fRH8bG9pNdKb3pTogkpTP3zZ9z5K+9q7F8e28BEa38A1wDHejsvJ82azGnDhMb65O7N3Ixl5e5FXl3dA/jag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            color: #333;
+        }
+
+        header {
+            width: 100%;
+            background-color: #e91e63;
+            padding: 15px 0;
+            color: white;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 80px);
+            text-align: center;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/static/images/mypic.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #e91e63; 
+            margin-bottom: 20px;
+        }
+
+        .upload-container {
+            display: inline-block;
+            padding: 30px;
+            border: 2px dashed #e91e63;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .upload-container:hover {
+            transform: scale(1.05);
+            border-color: #d81b60; 
+        }
+
+        input[type="file"] {
+            margin: 15px 0;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="file"]:hover {
+            border: 1px solid #e91e63; 
+        }
+
+        button {
+            background-color: #ffc0cb;
+            color: #e91e63;
+            border: 2px solid #e91e63; 
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #e91e63;
+            color: white; 
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e91e63; 
+        }
+
+        .icon {
+            font-size: 60px;
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: white;
+            background-color: #333; 
+            padding: 15px;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #ffc0cb; 
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 2px dashed #e91e63; /* Pink dashed border added */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .contact-container:hover {
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: #d81b60; /* Slightly darker pink border on hover */
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .contact-item i {
+            font-size: 20px;
+            color: #e91e63;
+            margin-right: 8px;
+        }
+
+        .contact-item a {
+            color: #e91e63;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Emotion Recognition Application</h2>
+    </header>
+
+    <main>
+        <h1>Emotion Recognition</h1>
+        
+        <div class="upload-container">
+            <i class="fas fa-microphone icon"></i>
+            <p>Upload your voice file below to predict the emotion:</p>
+            <form id="upload-form" enctype="multipart/form-data">
+                <input type="file" id="file" name="file" accept=".wav">
+                <button type="button" onclick="submitForm()">Upload and Predict</button>
+            </form>
+            <div id="result"></div>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-item">
+                <i class="fas fa-info-circle"></i>
+                <span>About: This application predicts emotions from voice inputs.</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Address: Street NO 1 Vehari, Punjab, Pakistan </span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:contact@example.com">Email: mehwishfariad833@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <a href="tel:+923262081833">Phone: +923262081833</a>
+            </div>
+        </div>
+    </main>
+
+    <div class="footer">
+        <p>Developed by <a href="https://github.com" target="_blank">Mehwish</a>. For more details, visit the <a href="https://github.com" target="_blank">GitHub repository</a>.</p>
+    </div>
+
+    <script>
+        async function submitForm() {
+            const formData = new FormData();
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length === 0) {
+                alert("Please select a file!");
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                document.getElementById('result').innerText = "Error: " + result.error;
+            } else {
+                document.getElementById('result').innerText = "Predicted Emotion: " + result.emotion;
+            }
+        }
+    </script>
+</body>
+</html>
